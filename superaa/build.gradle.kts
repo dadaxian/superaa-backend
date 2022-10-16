@@ -26,6 +26,11 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("com.baomidou:mybatis-plus-boot-starter:3.4.3.4")
+    implementation("mysql:mysql-connector-java")
+    implementation("com.baomidou:mybatis-plus-generator:3.5.3")
+
+    implementation("p6spy:p6spy:3.9.1")
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
