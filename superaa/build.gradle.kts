@@ -22,6 +22,9 @@ repositories {
 }
 
 dependencies {
+// <!-- 模板引擎 -->
+    implementation("org.apache.velocity:velocity-engine-core:2.3")
+    implementation("org.freemarker:freemarker:2.3.32")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
@@ -29,7 +32,7 @@ dependencies {
     implementation("com.baomidou:mybatis-plus-boot-starter:3.4.3.4")
     implementation("mysql:mysql-connector-java")
     implementation("com.baomidou:mybatis-plus-generator:3.5.3")
-
+    implementation("com.google.code.gson:gson:2.8.9")
     implementation("p6spy:p6spy:3.9.1")
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
