@@ -18,6 +18,8 @@ open class UserEntity {
 
     var nickName: String? = null
 
+    var avatarUrl: String? = null
+
     var accountType: Byte? = null
 
     var deleted: Short? = null
@@ -34,6 +36,7 @@ open class UserEntity {
                 "openId = $openId " +
                 "unionId = $unionId " +
                 "nickName = $nickName " +
+                "avatarUrl = $avatarUrl"+
                 "accountType = $accountType " +
                 "deleted = $deleted " +
                 "createTime = $createTime " +
@@ -53,6 +56,7 @@ open class UserEntity {
         if (openId != other.openId) return false
         if (unionId != other.unionId) return false
         if (nickName != other.nickName) return false
+        if (avatarUrl != other.avatarUrl) return false
         if (accountType != other.accountType) return false
         if (deleted != other.deleted) return false
         if (createTime != other.createTime) return false

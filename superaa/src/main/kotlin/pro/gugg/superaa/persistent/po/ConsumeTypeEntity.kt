@@ -1,8 +1,6 @@
 package pro.gugg.superaa.persistent.po
 
-import com.baomidou.mybatisplus.annotation.FieldFill
-import com.baomidou.mybatisplus.annotation.TableField
-import com.baomidou.mybatisplus.annotation.TableName
+import com.baomidou.mybatisplus.annotation.*
 import java.io.Serializable
 import java.sql.Timestamp
 
@@ -20,7 +18,7 @@ class ConsumeTypeEntity : Serializable {
     /**
      * 消费类型id
      */
-    @TableField("id")
+    @TableId(type= IdType.AUTO)
     var id: Long? = null
 
     /**
