@@ -24,8 +24,14 @@ class ConsumeBillEntity : Serializable {
     /**
      * 消费账单描述
      */
-    @TableField("describe")
-    var describe: String? = null
+    @TableField("bill_desc")
+    var billDesc: String? = null
+
+    /**
+     * 消费金额
+     */
+    @TableField("cost")
+    var cost: Double? = null
 
     /**
      * 账单付款人
@@ -76,7 +82,7 @@ class ConsumeBillEntity : Serializable {
     override fun toString(): String {
         return "ConsumeBillEntity{" +
         "id=" + id +
-        ", describe=" + describe +
+        ", describe=" + billDesc +
         ", payUserId=" + payUserId +
         ", splitWay=" + splitWay +
         ", billTypeId=" + billTypeId +

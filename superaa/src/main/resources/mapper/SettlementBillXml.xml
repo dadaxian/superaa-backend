@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pro.gugg.superaa.persistent.mapper.SettlementBillMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="pro.gugg.superaa.persistent.po.SettlementBillEntity">
+        <result column="id" property="id" />
+        <result column="bill_value" property="billValue" />
+        <result column="pay_user_id" property="payUserId" />
+        <result column="receive_user_id" property="receiveUserId" />
+        <result column="is_settled" property="isSettled" />
+        <result column="book_id" property="bookId" />
+        <result column="create_time" property="createTime" />
+        <result column="uodate_time" property="uodateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, bill_value, pay_user_id, receive_user_id, is_settled, book_id, create_time, uodate_time
+    </sql>
+
+</mapper>

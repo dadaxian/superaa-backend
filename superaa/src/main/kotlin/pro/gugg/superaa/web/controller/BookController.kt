@@ -7,9 +7,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pro.gugg.superaa.persistent.po.BookEntity
 import pro.gugg.superaa.persistent.po.BookUserRelEntity
+import pro.gugg.superaa.persistent.po.ConsumeBillEntity
 import pro.gugg.superaa.persistent.po.UserEntity
 import pro.gugg.superaa.persistent.service.BookService
 import pro.gugg.superaa.persistent.service.BookUserRelService
+import pro.gugg.superaa.persistent.service.ConsumeBillService
 import pro.gugg.superaa.persistent.service.UserEntityService
 import pro.gugg.superaa.vo.BookVo
 import java.text.SimpleDateFormat
@@ -29,39 +31,55 @@ import java.util.stream.Collectors.toList
 class BookController(
     private val bookService: BookService,
     private val bookUserRelService: BookUserRelService,
-    private val userEntityService: UserEntityService
+    private val userEntityService: UserEntityService,
+    private val consumeBillService: ConsumeBillService
 ) {
-    @RequestMapping("/get/{id}")
-    fun getUser(@PathVariable("id") id: Long): BookEntity? {
-        return bookService.getById(id)
-    }
-
     @RequestMapping("/get/all")
     fun getAllBook(): List<BookEntity>? {
         return bookService.list()
     }
-    fun getBookVo(bookEntity: BookEntity):BookVo{
-        var bookVo = BookVo()
+
+    @RequestMapping("/getBooksByCreatePeople/{id}")
+    fun getBooks(@PathVariable("id") id: Long): List<BookVo>? {
+        val books: MutableList<BookEntity>? =
+            bookService.list(KtQueryWrapper(BookEntity::class.java).eq(BookEntity::createUserId, id))
+        val bookVos: List<BookVo>? = books?.map { bookEntity ->
+            val bookVo = BookVo()
+            bookVo.id = bookEntity.id
+            bookVo.name = bookEntity.name
+            bookVo.createTime =
+                if (bookEntity.createTime == null) null else SimpleDateFormat("yyyy年MM月dd日").format(bookEntity.createTime)
+            bookVo.pay = 100.30
+            bookVo.avatars = bookUserRelService.list(
+                KtQueryWrapper(BookUserRelEntity::class.java).eq(
+                    BookUserRelEntity::bookId,
+                    bookEntity.id
+                )
+            ).stream().map({ bu -> userEntityService.getById(bu.userId)?.avatarUrl }).collect(toList()).toTypedArray()
+            bookVo
+        }
+        return bookVos
+    }
+
+    @RequestMapping("/getBookDetailById/{id}")
+    fun getBookDetail(@PathVariable("id") id: Long): BookVo? {
+        val bookEntity = bookService.getById(id);
+        val bookVo = BookVo()
         bookVo.id = bookEntity.id
-        bookVo.name=bookEntity.name
-        bookVo.createTime = if(bookEntity.createTime==null) null else SimpleDateFormat("yyyy年MM月dd日").format(bookEntity.createTime)
-        bookVo.pay = 100.30
+        bookVo.name = bookEntity.name
+        bookVo.createTime =
+            if (bookEntity.createTime == null) null else SimpleDateFormat("yyyy年MM月dd日").format(bookEntity.createTime)
+        val consumeBillEntities =
+            consumeBillService.list(KtQueryWrapper(ConsumeBillEntity::class.java).eq(ConsumeBillEntity::bookId, id))
+        consumeBillEntities.forEach { bookVo.allCost = bookVo.allCost!! + it.cost!! }
         bookVo.avatars = bookUserRelService.list(
             KtQueryWrapper(BookUserRelEntity::class.java).eq(
                 BookUserRelEntity::bookId,
                 bookEntity.id
             )
-        ).stream().map({ bu ->  userEntityService.getById(bu.userId)?.avatarUrl}).collect(toList()).toTypedArray()
+        ).stream().map({ bu -> userEntityService.getById(bu.userId)?.avatarUrl }).collect(toList()).toTypedArray()
+
         return bookVo
-    }
-    @RequestMapping("/getBooks/{id}")
-    fun getBooks(@PathVariable("id") id: Long): List<BookVo>? {
-        var books: MutableList<BookEntity>? =
-            bookService.list(KtQueryWrapper(BookEntity::class.java).eq(BookEntity::createUserId, id))
-        var bookVos: List<BookVo>? = books?.map {
-            getBookVo(it)
-        }
-        return bookVos
     }
 
     @RequestMapping("/get/name/{name}")
